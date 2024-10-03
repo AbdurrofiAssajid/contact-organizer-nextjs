@@ -1,13 +1,14 @@
 import React from 'react';
-import ContactItem from "./ContactItem"; // Make sure this is imported correctly
+import ContactItem from './ContactItem'; 
 
-export default function ContactList({ contacts = [] }) { // Default to an empty array
+
+export default function ContactList({ contacts = [] }) { 
   return (
     <section>
       {contacts.length === 0 ? ( 
-        <p></p> // Display a message when there are no contacts
+        <p></p> 
       ) : (
-        contacts.map((contact) => ( // Render the contact items
+        contacts.map((contact) => ( 
           <ContactItem
             key={contact.id}
             imgUrl={contact.imgUrl} 

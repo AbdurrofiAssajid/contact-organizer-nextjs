@@ -7,7 +7,7 @@ export default function Home() {
    <main>
     <ContactInput/>
     <ContactList/>
-    <ContactItem imgUrl={null} name={null} email={null}/>
+    <ContactItem />
    </main>
    
   );

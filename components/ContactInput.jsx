@@ -2,20 +2,29 @@
 
 import * as React from "react";
 
+
 export default function ContactInput() {
-  const formRef = React.useRef(null);
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [img_url, setImgUrl] = React.useState("");
+  const [emailError, setEmailError] = React.useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = formRef.current;
 
-    e.preventDefault();
-    console.log({
-      name: form["name"].value,
-      email: form["email"].value,
-      img_url: form["img_url"].value || null,
-    });
-    form.reset();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      alert("Please enter a valid email address.");
+      setEmailError(true);
+      return;
+    }
+
+    console.log({ name, email, img_url });
+    
+    setName("");
+    setEmail("");
+    setImgUrl("");
+    setEmailError(false);
   };
 
   return (
@@ -23,34 +32,48 @@ export default function ContactInput() {
       <h2 className="text-5xl font-bold mb-9 mt-6 text-center text-blue-950">
         Add New Contact
       </h2>
-      <form className="space-y-4" ref={formRef}>
-          <input
-            placeholder="Name"
-            name="name"
-            className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
-          />
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <input
+          placeholder="Name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
+        />
 
-          <input
-            placeholder="Email"
-            name="email"
-            required
-            className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
-          />
+        <input
+          placeholder="Email"
+          name="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (emailError) {
+              setEmailError(false);
+            }
+          }}
+          required
+          className={`w-full p-4 border rounded-md focus:outline-none focus:ring-2 transition duration-300 ${
+            emailError ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-950'
+          }`}
+        />
 
-          <input
-            placeholder="Image URL"
-            name="img_url"
-            className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
-          />
-        
+        <input
+          placeholder="Image URL"
+          name="img_url"
+          value={img_url}
+          onChange={(e) => setImgUrl(e.target.value)}
+          className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
+        />
       </form>
-      <button
-        className="w-full mt-14 mb-2 p-4 bg-blue-950 text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-300"
-        type="submit"
-        onClick={handleSubmit}
-      >
-        Submit
-      </button>
+
+      <div className="mt-16 mb-0">
+        <button
+          className="w-full p-4 bg-blue-950 text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-300"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
     </section>
   );
 }

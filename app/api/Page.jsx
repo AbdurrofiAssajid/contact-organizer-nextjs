@@ -1,11 +1,12 @@
-'use server';
+"use server";
 
-import React from 'react';
-import ContactList from './ContactList'; // Import your ContactList component
+import React from "react";
+import ContactList from "./ContactList";
 
 async function fetchContacts() {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/contacts`, {
+    const response = await fetch(`${process.env.BASE_URL}/api/contacts/new`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
@@ -17,8 +18,8 @@ async function fetchContacts() {
     }
 
     const data = await response.json();
-    return data.data || []; // Return the contact data or an empty array
-
+    console.log(data);
+    return data.data || [];
   } catch (error) {
     console.error(error);
     throw new Error("Failed to fetch contacts.");
@@ -27,17 +28,16 @@ async function fetchContacts() {
 
 export default async function Page() {
   let contacts = [];
-  
+
   try {
-    contacts = await fetchContacts(); 
+    contacts = await fetchContacts();
   } catch (error) {
     return <p>Error: {error.message}</p>;
   }
 
-  // Render the ContactList with fetched contacts
   return (
     <div>
-      <ContactList contacts={contacts} /> {/* Pass contacts to the ContactList component */}
+      <ContactList contacts={contacts} />
     </div>
   );
 }
