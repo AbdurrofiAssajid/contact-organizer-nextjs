@@ -7,9 +7,7 @@ export default function Footer() {
         &copy; Bootcamp Day-4 | Abdurrofi | All rights reserved.
       </small>
       <p className="text-xs italic font-bold">
-        <a href="https://word-analytics-site.vercel.app"
-          target="_blank">
-          Try this cool website! and try to write "rofi"</a>
+        image URL = https://dummyjson.com/image/400x200/003366/ffffff?text=Hi+Sabrina"
       </p>
     </footer>
   );
