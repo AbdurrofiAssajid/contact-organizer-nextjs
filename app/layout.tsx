@@ -5,8 +5,8 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Contact apps",
-  description: "Created by an accomplished developer",
+  title: "Contact Organizer",
+  description: "Created by an accomplished developer || Rofi",
 };
 
 export default function RootLayout({
