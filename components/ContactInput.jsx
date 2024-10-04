@@ -60,7 +60,7 @@ function ContactInput() {
 
       const newContact = await response.json();
       setContacts([...contacts, newContact.data]);
-      
+
       // RESET
       setFormData({
         name: "",
@@ -89,7 +89,7 @@ function ContactInput() {
          Contact Organizer 📚
       </h2>
 
-      <h3 className="text-3xl font-bold mb-6 text-blue-950 mt-6">Contact List: </h3>
+      <h2 className="text-3xl font-bold mb-6 text-blue-950 mt-6">Contact List: </h2>
 
       {error && <p className="text-red-500">{error}</p>}
       {!error && contacts.length > 0 ? (
@@ -125,7 +125,7 @@ function ContactInput() {
         <button
           className={`w-full mt-14 mb-2 p-4 ${
             loading ? "bg-gray-400" : "bg-blue-950"
-          } text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-300`}
+          } text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-150`}
           type="submit"
           disabled={loading} 
         >
