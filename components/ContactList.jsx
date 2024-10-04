@@ -1,12 +1,12 @@
-import React from 'react';
-import ContactItem from './ContactItem'; 
+import React from 'react'
+import ContactItem from './ContactItem'
 
 
 export default function ContactList({ contacts = [] }) { 
   return (
     <section>
       {contacts.length === 0 ? ( 
-        <p></p> 
+        <></>
       ) : (
         contacts.map((contact) => ( 
           <ContactItem

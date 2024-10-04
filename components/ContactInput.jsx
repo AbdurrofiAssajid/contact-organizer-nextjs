@@ -1,79 +1,139 @@
 "use client";
 
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import ContactList from "./ContactList";
 
+function ContactInput() {
+  const [contacts, setContacts] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false); 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    img_url: "",
+  });
 
-export default function ContactInput() {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [img_url, setImgUrl] = React.useState("");
-  const [emailError, setEmailError] = React.useState(false);
+  useEffect(() => {
+    async function fetchContacts() {
+      setLoading(true); // Start loading
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contacts`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+          },
+        });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      alert("Please enter a valid email address.");
-      setEmailError(true);
-      return;
+        const data = await response.json();
+        setContacts(data.data || []);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); // Stop loading
+      }
     }
 
-    console.log({ name, email, img_url });
-    
-    setName("");
-    setEmail("");
-    setImgUrl("");
-    setEmailError(false);
+    fetchContacts();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true); // Start loading when form is submitted
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/contacts/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit contact");
+      }
+
+      const newContact = await response.json();
+      setContacts([...contacts, newContact.data]);
+      
+      // RESET
+      setFormData({
+        name: "",
+        email: "",
+        img_url: "",
+      });
+    } catch (error) {
+      console.error(error);
+      setError("Failed to submit contact.");
+    } finally {
+      setLoading(false); 
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   return (
-    <section className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
-      <h2 className="text-5xl font-bold mb-9 mt-6 text-center text-blue-950">
-        Add New Contact
+    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-md mt-10">
+      <h2 className="text-5xl font-bold mb-16 mt-5 text-center text-blue-950">
+         Contact Organizer 📚
       </h2>
+
+      <h3 className="text-3xl font-bold mb-6 text-blue-950 mt-6">Contact List: </h3>
+
+      {error && <p className="text-red-500">{error}</p>}
+      {!error && contacts.length > 0 ? (
+        <ContactList contacts={contacts} />
+      ) : (
+        <></>
+      )}
+
+      <h2 className="text-3xl font-bold mb-3 mt-14 text-blue-950">Add New Contact</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <input
           placeholder="Name"
           name="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
           className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
+          value={formData.name}
+          onChange={handleInputChange}
         />
-
         <input
           placeholder="Email"
           name="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            if (emailError) {
-              setEmailError(false);
-            }
-          }}
           required
-          className={`w-full p-4 border rounded-md focus:outline-none focus:ring-2 transition duration-300 ${
-            emailError ? 'border-red-500 focus:ring-red-200' : 'border-gray-300 focus:ring-blue-950'
-          }`}
+          className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
+          value={formData.email}
+          onChange={handleInputChange}
         />
-
         <input
           placeholder="Image URL"
           name="img_url"
-          value={img_url}
-          onChange={(e) => setImgUrl(e.target.value)}
           className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
+          value={formData.img_url}
+          onChange={handleInputChange}
         />
-      </form>
-
-      <div className="mt-16 mb-0">
         <button
-          className="w-full p-4 bg-blue-950 text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-300"
-          onClick={handleSubmit}
+          className={`w-full mt-14 mb-2 p-4 ${
+            loading ? "bg-gray-400" : "bg-blue-950"
+          } text-white font-semibold rounded-md hover:bg-zinc-950 transition duration-300`}
+          type="submit"
+          disabled={loading} 
         >
-          Submit
+          {loading ? "Loading..." : "Submit"} 
         </button>
-      </div>
-    </section>
+      </form>
+    </div>
   );
 }
+
+export default ContactInput;
