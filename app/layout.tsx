@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="!scroll-smoth">
-      <body className={`${inter.className} ${inter.className} antialiased`}>
+      <body className={`${inter.className} ${inter.className} antialiased bg-slate-100`}>
         {children}
       </body>
     </html>
