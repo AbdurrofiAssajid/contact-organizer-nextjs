@@ -7,7 +7,7 @@ export default function Footer() {
         &copy; Bootcamp Day-4 | Abdurrofi | All rights reserved.
       </small>
       <p className="text-xs italic font-bold">
-        image URL = https://dummyjson.com/image/400x200/003366/ffffff?text=Hi+Sabrina"
+        image URL = https://dummyjson.com/image/400x200/003366/ffffff?text=Hi+Sabrina&quot;
       </p>
     </footer>
   );
