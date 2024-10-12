@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 export default function ContactItem({ id, imgUrl, name, email }) {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -9,10 +10,12 @@ export default function ContactItem({ id, imgUrl, name, email }) {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      const confirmation = window.confirm("Are you sure you want to delete this?");
+      const confirmation = window.confirm(
+        "Are you sure you want to delete this?"
+      );
       if (!confirmation) {
         setIsDeleting(false);
-        return; 
+        return;
       }
 
       const response = await fetch(
@@ -31,26 +34,25 @@ export default function ContactItem({ id, imgUrl, name, email }) {
       }
 
       setIsDeleted(true);
-      toast.success('Contact successfully deleted!'); 
-
+      toast.success("Contact successfully deleted!");
     } catch (error) {
       if (error.message === "Failed to delete contact") {
-        toast.error('Error occurred while deleting contact');
+        toast.error("Error occurred while deleting contact");
       }
       console.error("Failed to delete contact:", error);
     } finally {
-      setIsDeleting(false); 
-    } 
+      setIsDeleting(false);
+    }
   };
 
   if (isDeleted) {
-    return null
+    return null;
   }
 
   return (
     <div className="flex items-center p-4 justify-between mt-4 mb-4 rounded-lg shadow-md">
       <div className="flex items-center space-x-4">
-        <img
+        <Image
           src={
             imgUrl ||
             "https://dummyjson.com/image/400x200/003366/ffffff?text=Hi+Sabrina"
