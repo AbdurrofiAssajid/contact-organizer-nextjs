@@ -49,8 +49,8 @@ export default function ContactItem({ id, imgUrl, name, email }) {
   }
 
   return (
-    <div className="flex items-center p-4 justify-between mt-4 mb-4 rounded-lg shadow-md">
-      <div className="flex items-center space-x-4">
+    <div className="flex items-center p-4 justify-between mt-4 mb-4 rounded-lg shadow-md ease-in-out hover:shadow-2xl hover:scale-105 duration-300 transition-all">
+      <div className="flex items-center space-x-4 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
         <img
           src={
             imgUrl ||
