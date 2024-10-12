@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import Image from "next/image";
 
 export default function ContactItem({ id, imgUrl, name, email }) {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -52,7 +51,7 @@ export default function ContactItem({ id, imgUrl, name, email }) {
   return (
     <div className="flex items-center p-4 justify-between mt-4 mb-4 rounded-lg shadow-md">
       <div className="flex items-center space-x-4">
-        <Image
+        <img
           src={
             imgUrl ||
             "https://dummyjson.com/image/400x200/003366/ffffff?text=Hi+Sabrina"
