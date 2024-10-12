@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function ContactItem({ id, imgUrl, name, email, onDelete }) {
+export default function ContactItem({ id, imgUrl, name, email }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
 

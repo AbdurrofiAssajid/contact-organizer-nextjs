@@ -3,16 +3,16 @@
 import React, { useState, useEffect } from "react";
 import ContactList from "./ContactList";
 import toast from "react-hot-toast";
+import Image from "next/image";
 
 
 function ContactInput() {
   const [contacts, setContacts] = useState([]);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false); 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    img_url: "",
+    Image_url: "",
   });
 
   useEffect(() => {
@@ -68,7 +68,7 @@ function ContactInput() {
       setFormData({
         name: "",
         email: "",
-        img_url: "",
+        Image_url: "",
       });
       toast.success("Contact successfully added")
 
@@ -123,10 +123,10 @@ function ContactInput() {
         />
         <input
           placeholder="Image URL"
-          name="img_url"
+          name="Image_url"
           required
           className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
-          value={formData.img_url}
+          value={formData.Image_url}
           onChange={handleInputChange}
         />
         <button
