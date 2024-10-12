@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import ContactList from "./ContactList";
+import toast from "react-hot-toast";
+
 
 function ContactInput() {
   const [contacts, setContacts] = useState([]);
@@ -31,7 +33,7 @@ function ContactInput() {
         const data = await response.json();
         setContacts(data.data || []);
       } catch (error) {
-        console.error(error);
+        toast.error("Error during fetching the data.")
       } finally {
         setLoading(false); // Stop loading
       }
@@ -52,6 +54,7 @@ function ContactInput() {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
         },
         body: JSON.stringify(formData),
+        
       });
 
       if (!response.ok) {
@@ -67,9 +70,11 @@ function ContactInput() {
         email: "",
         img_url: "",
       });
+      toast.success("Contact successfully added")
+
     } catch (error) {
       console.error(error);
-      setError("Failed to submit contact.");
+      toast.error("Insert the input correctly")
     } finally {
       setLoading(false); 
     }
@@ -102,6 +107,7 @@ function ContactInput() {
       <form className="space-y-4" onSubmit={handleSubmit}>
         <input
           placeholder="Name"
+          required
           name="name"
           className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
           value={formData.name}
@@ -118,6 +124,7 @@ function ContactInput() {
         <input
           placeholder="Image URL"
           name="img_url"
+          required
           className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-950 transition duration-300"
           value={formData.img_url}
           onChange={handleInputChange}
@@ -130,6 +137,7 @@ function ContactInput() {
           disabled={loading} 
         >
           {loading ? "Loading..." : "Submit"} 
+          
         </button>
       </form>
     </div>
